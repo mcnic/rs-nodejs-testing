@@ -1,4 +1,8 @@
-import { InsufficientFundsError, getBankAccount } from '.';
+import {
+  InsufficientFundsError,
+  SynchronizationFailedError,
+  getBankAccount,
+} from '.';
 
 describe('BankAccount', () => {
   test('should create account with initial balance', () => {
@@ -67,11 +71,11 @@ describe('BankAccount', () => {
     }
   });
 
-  //todo ???
   test('should throw SynchronizationFailedError if fetchBalance returned null', async () => {
     const account = getBankAccount(100);
-    account.synchronizeBalance().then(() => {
-      expect(account.getBalance()).toBeDefined();
+
+    account.synchronizeBalance().catch((err) => {
+      expect(err).toBeInstanceOf(SynchronizationFailedError);
     });
   });
 });
